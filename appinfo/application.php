@@ -109,7 +109,7 @@ class Application extends App {
 			);
 		});
 		// Register HTML preview middleware
-		$container->registerService('HtmlPreviewMiddleware', function($c) {
+		$container->registerService('HtmlPreviewMiddleware', function($c) use ($server) {
 			return new HtmlPreviewMiddleware(
 				$c['ControllerMethodReflector'],
 				$server->getLogger(),
