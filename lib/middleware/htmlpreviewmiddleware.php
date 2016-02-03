@@ -53,9 +53,7 @@ class HtmlPreviewMiddleware extends Middleware {
 			return $response;
 		}
 
-		// Check token in Memcached and clear if necessary
 		if($response instanceof \OCP\AppFramework\Http\NotFoundResponse) {
-			// TODO: unset token in Memcached but how??? Might be cron job?
 			return $response;
 		}
 
@@ -91,7 +89,7 @@ class HtmlPreviewMiddleware extends Middleware {
 
 		// set token
 		$fileSaltKey = 'filesalt_' . $secretPath;
-		$this->cache->set($fileSaltKey, $token);
+		$this->cache->set($fileSaltKey, $token, 5 * 60); // expire in 5 minutes
 
 		$secretLink = $this->getSecretLink($secretPath, $expires, $token,
 				                           $secretSalt, $htmlPreviewPrefix);
@@ -104,7 +102,8 @@ class HtmlPreviewMiddleware extends Middleware {
 		if($htmlPreviewDomain) {
 			$csp->addAllowedFrameDomain($htmlPreviewDomain);
 		}
-		$response = new TemplateResponse($this->appName, 'html_preview_public', $params, 'base');
+		$response = new TemplateResponse($this->appName, 'html_preview_public',
+				                         $params, 'base');
 		$response->setContentSecurityPolicy($csp);
 
 		return $response;
