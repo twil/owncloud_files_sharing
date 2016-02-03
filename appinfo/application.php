@@ -107,9 +107,18 @@ class Application extends App {
 				$c['ControllerMethodReflector']
 			);
 		});
+		// Register HTML preview middleware
+		$container->registerService('HtmlPreviewMiddleware', function($c) {
+			return new HtmlPreviewMiddleware(
+				$c->query('ControllerMethodReflector'),
+				$c->query('Logger'),
+				$c->query('AppName')
+			);
+		});
 
 		// Execute middlewares
 		$container->registerMiddleware('SharingCheckMiddleware');
+		$container->registerMiddleware('HtmlPreviewMiddleware');
 
 		$container->registerService('MountProvider', function (IContainer $c) {
 			/** @var \OCP\IServerContainer $server */
