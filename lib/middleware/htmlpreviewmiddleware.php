@@ -91,8 +91,8 @@ class HtmlPreviewMiddleware extends Middleware {
 		$fileSaltKey = 'filesalt_' . $secretPath;
 		$this->cache->set($fileSaltKey, $token, 5 * 60); // expire in 5 minutes
 
-		$secretLink = $this->getSecretLink($secretPath, $expires, $token,
-				                           $secretSalt, $htmlPreviewPrefix);
+		$secretLink = self::getSecretLink($secretPath, $expires, $token,
+				                          $secretSalt, $htmlPreviewPrefix);
 
 		$params['secretLink'] = $secretLink;
 
@@ -113,8 +113,8 @@ class HtmlPreviewMiddleware extends Middleware {
 		$this->logger->error($message, array('app' => $this->appName));
 	}
 
-	protected function getSecretLink($path, $expires, $fileSalt, $secretSalt,
-			                         $prefix='', $suffix='') {
+	public static function getSecretLink($path, $expires, $fileSalt,
+			                             $secretSalt, $prefix='', $suffix='') {
 		$hash = md5($expires . $path . $fileSalt . $secretSalt, true);
 		$hash = base64_encode($hash);
 		$hash = str_replace(array('+', '/', '='), array('-', '_', ''), $hash);
