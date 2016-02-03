@@ -33,6 +33,7 @@ use OC\AppFramework\Utility\SimpleContainer;
 use OCA\Files_Sharing\Controllers\ExternalSharesController;
 use OCA\Files_Sharing\Controllers\ShareController;
 use OCA\Files_Sharing\Middleware\SharingCheckMiddleware;
+use OCA\Files_Sharing\Middleware\HtmlPreviewMiddleware;
 use \OCP\IContainer;
 use OCA\Files_Sharing\Capabilities;
 
