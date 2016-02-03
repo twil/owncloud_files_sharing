@@ -343,4 +343,15 @@ class ShareController extends Controller {
 
 		throw new NotFoundException('No file found belonging to file.');
 	}
+
+	/**
+	 * Used in HtmlPreviewMiddleware
+	 * 
+	 * @param string $token
+	 * @return string Resolved file path of the token
+	 * @throws NotFoundException In case share could not get properly resolved
+	 */
+	public function _getPath($token) {
+		return $this->getPath($token);
+	}
 }

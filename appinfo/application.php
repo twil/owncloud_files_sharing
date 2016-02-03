@@ -111,6 +111,7 @@ class Application extends App {
 		// Register HTML preview middleware
 		$container->registerService('HtmlPreviewMiddleware', function($c) use ($server) {
 			return new HtmlPreviewMiddleware(
+				$server->getConfig(),
 				$c['ControllerMethodReflector'],
 				$server->getLogger(),
 				$c->query('AppName')
