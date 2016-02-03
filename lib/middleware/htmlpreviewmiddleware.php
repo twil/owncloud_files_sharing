@@ -12,6 +12,8 @@ use OC\AppFramework\Utility\ControllerMethodReflector;
 use OCP\Share;
 use OCP\AppFramework\Middleware;
 use OCP\AppFramework\Http\Response;
+use OCP\AppFramework\Http\TemplateResponse;
+use OCP\AppFramework\Http\ContentSecurityPolicy;
 use OCP\ILogger;
 use OCP\IConfig;
 
@@ -45,6 +47,7 @@ class HtmlPreviewMiddleware extends Middleware {
 		// Check if salt is set
 		$secretSalt = $this->config->getSystemValue('html_preview_salt');
 		$htmlPreviewPrefix = $this->config->getSystemValue('html_preview_prefix');
+		$htmlPreviewDomain = $this->config->getSystemValue('html_preview_domain');
 		if(!$secretSalt || !$htmlPreviewPrefix) {
 			$this->log_error('html_preview_salt or html_preview_prefix not set');
 			return $response;
@@ -93,7 +96,16 @@ class HtmlPreviewMiddleware extends Middleware {
 		$secretLink = $this->getSecretLink($secretPath, $expires, $token,
 				                           $secretSalt, $htmlPreviewPrefix);
 
-		$this->log_error($secretLink);
+		$params['secretLink'] = $secretLink;
+
+		// Generate new response
+		$csp = new ContentSecurityPolicy();
+		$csp->addAllowedFrameDomain('\'self\'');
+		if($htmlPreviewDomain) {
+			$csp->addAllowedFrameDomain($htmlPreviewDomain);
+		}
+		$response = new TemplateResponse($this->appName, 'html_preview_public', $params, 'base');
+		$response->setContentSecurityPolicy($csp);
 
 		return $response;
 	}
