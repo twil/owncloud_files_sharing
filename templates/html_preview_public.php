@@ -106,7 +106,7 @@ $thumbSize = 1024;
 		<div id="preview">
 			
 			<?php /* We are previewing HTML file */ ?>
-			<iframe src="<?php p($_['secretLink']); ?>" sandbox="allow-forms,allow-scripts,allow-top-navigation"></iframe>
+			<iframe src="<?php p($_['secretLink']); ?>" sandbox="allow-forms allow-scripts allow-top-navigation"></iframe>
 
 		</div>
 	</div>
