@@ -2,10 +2,11 @@
 
 namespace OCA\Files_Sharing\Middleware;
 
-
+use OC\Files\Filesystem;
 use OC\Memcache\Memcached;
 use OC\AppFramework\Utility\ControllerMethodReflector;
 
+use OCP\Share;
 use OCP\AppFramework\Middleware;
 use OCP\AppFramework\Http\Response;
 use OCP\AppFramework\Http\TemplateResponse;
@@ -53,6 +54,12 @@ class HtmlPreviewMiddleware extends Middleware {
 		if($params['mimetype'] != 'text/html') {
 			return $response;
 		}
+
+		$token = $params['sharingToken'];
+		$linkItem = Share::getShareByToken($token, false);
+
+		$path = Filesystem::getPath($linkItem['file_source']);
+		$owner = $params['owner'];
 
 		$params['secretLink'] = SecretLink::getHTMLPreviewLink($this->config,
 				                                               $path, $owner);
