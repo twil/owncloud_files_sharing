@@ -42,12 +42,15 @@ class HtmlPreviewMiddleware extends Middleware {
 	 */
 	public function afterController($controller, $methodName,
 			                        Response $response) {
-		$params = $response->getParams();
-
-		if($response instanceof \OCP\AppFramework\Http\NotFoundResponse ||
+		if($response instanceof  \OCP\AppFramework\Http\JSONResponse ||
+		   $response instanceof \OCP\AppFramework\Http\NotFoundResponse ||
 		   !($controller instanceof \OCA\Files_Sharing\Controllers\ShareController) ||
-		   $methodName != 'showShare' ||
-		   $params['mimetype'] != 'text/html') {
+		   $methodName != 'showShare') {
+			return $response;
+		}
+
+		$params = $response->getParams();
+		if($params['mimetype'] != 'text/html') {
 			return $response;
 		}
 
@@ -57,6 +60,8 @@ class HtmlPreviewMiddleware extends Middleware {
 		// Generate new response
 		$csp = new ContentSecurityPolicy();
 		$csp->addAllowedFrameDomain('\'self\'');
+
+		$htmlPreviewDomain = $this->config->getSystemValue('html_preview_domain');
 		if($htmlPreviewDomain) {
 			$csp->addAllowedFrameDomain($htmlPreviewDomain);
 		}

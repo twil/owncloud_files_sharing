@@ -20,7 +20,6 @@ class SecretLink {
 		// Check if salt is set
 		$secretSalt = $config->getSystemValue('html_preview_salt');
 		$htmlPreviewPrefix = $config->getSystemValue('html_preview_prefix');
-		$htmlPreviewDomain = $config->getSystemValue('html_preview_domain');
 		if(!$secretSalt || !$htmlPreviewPrefix) {
 			$this->log_error('html_preview_salt or html_preview_prefix not set');
 			return '';
