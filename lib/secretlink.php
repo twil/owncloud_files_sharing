@@ -31,7 +31,7 @@ class SecretLink {
 		// preset params
 		$token = bin2hex(openssl_random_pseudo_bytes(32));
 		$expires = '2020-12-31 23:59:59';
-		$fileSaltKey = 'filesalt_' . $secretPath;
+		$fileSaltKey = 'filesalt_' . md5($secretPath);
 
 		$expires = strtotime($expires);
 
