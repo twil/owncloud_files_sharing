@@ -2,6 +2,7 @@
 
 namespace OCA\Files_Sharing\Middleware;
 
+use OC\Files\View;
 use OC\Files\Filesystem;
 use OC\Memcache\Memcached;
 use OC\AppFramework\Utility\ControllerMethodReflector;
@@ -59,7 +60,12 @@ class HtmlPreviewMiddleware extends Middleware {
 		$linkItem = Share::getShareByToken($token, false);
 
 		$path = Filesystem::getPath($linkItem['file_source']);
-		$owner = $params['owner'];
+        $owner = $params['owner'];
+
+        // need this to get the real owner
+        Filesystem::initMountPoints($owner);
+        $view = new View('/' . $owner . '/files');
+        $owner = $view->getOwner($path);
 
 		$params['secretLink'] = SecretLink::getHTMLPreviewLink($this->config,
 				                                               $path, $owner);
