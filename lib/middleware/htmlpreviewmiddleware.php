@@ -46,6 +46,7 @@ class HtmlPreviewMiddleware extends Middleware {
 			                        Response $response) {
 		if($response instanceof  \OCP\AppFramework\Http\JSONResponse ||
 		   $response instanceof \OCP\AppFramework\Http\NotFoundResponse ||
+		   $response instanceof \OCP\AppFramework\Http\RedirectResponse ||
 		   !($controller instanceof \OCA\Files_Sharing\Controllers\ShareController) ||
 		   $methodName != 'showShare') {
 			return $response;
