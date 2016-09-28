@@ -95,9 +95,7 @@ $thumbSize = 1024;
 			<?php else: ?>
 				<?php if ($_['previewEnabled'] && substr($_['mimetype'], 0, strpos($_['mimetype'], '/')) == 'video'): ?>
 					<div id="imgframe">
-						<video tabindex="0" controls="" preload="none">
-							<source src="<?php p($_['downloadURL']); ?>" type="<?php p($_['mimetype']); ?>" />
-						</video>
+						<video tabindex="0" controls="" preload="none" src="<?php p($_['downloadURL']); ?>"></video>
 					</div>
 				<?php else: ?>
 					<!-- Preview frame is filled via JS to support SVG images for modern browsers -->
