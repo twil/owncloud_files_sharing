@@ -53,13 +53,16 @@ $thumbSize = 1024;
 	box-sizing: border-box;
 }
 
-#preview iframe {
+#preview iframe,
+iframe#preview {
 	width: 100%;
 	height: 100%;
 	box-sizing: border-box;
 }
 </style>
-
+<iframe id="preview" src="<?php p($_['secretLink']); ?>"></iframe>
+<?php
+/*
 <header><div id="header" class="<?php p((isset($_['folder']) ? 'share-folder' : 'share-file')) ?>">
 		<a href="<?php print_unescaped(link_to('', 'index.php')); ?>"
 		   title="" id="owncloud">
@@ -106,10 +109,11 @@ $thumbSize = 1024;
 		<div id="preview">
 			
 			<?php
-			/**
-			 * We are previewing HTML file
-			 * sandbox="allow-forms allow-scripts allow-top-navigation"
-			 */ ?>
+			//
+			// We are previewing HTML file
+			// sandbox="allow-forms allow-scripts allow-top-navigation"
+            //
+            ?>
 			<iframe src="<?php p($_['secretLink']); ?>"></iframe>
 
 		</div>
@@ -120,3 +124,5 @@ $thumbSize = 1024;
 		</p>
 	</footer>
 </div>
+*/
+?>
